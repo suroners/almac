@@ -10,10 +10,27 @@ Target Server Type    : MYSQL
 Target Server Version : 50723
 File Encoding         : 65001
 
-Date: 2018-09-24 20:40:51
+Date: 2018-09-25 23:10:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for wp_city
+-- ----------------------------
+DROP TABLE IF EXISTS `wp_city`;
+CREATE TABLE `wp_city` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `partner_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_partner` (`partner_id`),
+  CONSTRAINT `fk_partner` FOREIGN KEY (`partner_id`) REFERENCES `wp_partner` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wp_city
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wp_commentmeta
@@ -65,6 +82,48 @@ CREATE TABLE `wp_comments` (
 -- Records of wp_comments
 -- ----------------------------
 INSERT INTO `wp_comments` VALUES ('1', '1', 'Автор комментария', 'wapuu@wordpress.example', 'https://wordpress.org/', '', '2018-09-24 19:22:41', '2018-09-24 16:22:41', 'Привет! Это комментарий.\nЧтобы начать модерировать, редактировать и удалять комментарии, перейдите на экран «Комментарии» в консоли.\nАватары авторов комментариев загружаются с сервиса <a href=\"https://ru.gravatar.com\">Gravatar</a>.', '0', '1', '', '', '0', '0');
+
+-- ----------------------------
+-- Table structure for wp_hi_trans_kg_data
+-- ----------------------------
+DROP TABLE IF EXISTS `wp_hi_trans_kg_data`;
+CREATE TABLE `wp_hi_trans_kg_data` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `to` varchar(255) DEFAULT NULL,
+  `basic` varchar(255) DEFAULT NULL,
+  `750kg` varchar(255) DEFAULT NULL,
+  `1500kg` varchar(255) DEFAULT NULL,
+  `3000kg` varchar(255) DEFAULT NULL,
+  `99999kg` varchar(255) DEFAULT NULL,
+  `city_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_hi_kgcity` (`city_id`),
+  CONSTRAINT `fk_hi_kgcity` FOREIGN KEY (`city_id`) REFERENCES `wp_city` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wp_hi_trans_kg_data
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wp_hi_trans_palet_data
+-- ----------------------------
+DROP TABLE IF EXISTS `wp_hi_trans_palet_data`;
+CREATE TABLE `wp_hi_trans_palet_data` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `to` varchar(255) DEFAULT NULL,
+  `1p` varchar(255) DEFAULT NULL,
+  `6p` varchar(255) DEFAULT NULL,
+  `10p` varchar(255) DEFAULT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_hi_palet_city` (`city_id`),
+  CONSTRAINT `fk_hi_palet_city` FOREIGN KEY (`city_id`) REFERENCES `wp_city` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wp_hi_trans_palet_data
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wp_links
@@ -239,6 +298,20 @@ INSERT INTO `wp_options` VALUES ('135', '_transient_timeout_dash_v2_f69de0bbfe7e
 INSERT INTO `wp_options` VALUES ('136', '_transient_dash_v2_f69de0bbfe7eaa113146875f40c02000', '<div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://ru.wordpress.org/news/2018/09/meetup-moscow-1809/\'>Электронная коммерция с WordPress, как создать интернет-магазин?</a></li></ul></div><div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://wptavern.com/new-commonwp-plugin-enables-wordpress-sites-to-use-the-free-jsdelivr-cdn\'>WPTavern: New commonWP Plugin Enables WordPress Sites to Use the Free jsDelivr CDN</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/gutenstats-blog-is-live-tracking-gutenberg-beta-testing-data\'>WPTavern: Gutenstats Blog Is Live, Tracking Gutenberg Beta Testing Data</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/acf-5-0-released-with-updated-ui-and-gutenberg-compatibility\'>WPTavern: ACF 5.0 Released with Updated UI and Gutenberg Compatibility</a></li></ul></div>', 'no');
 
 -- ----------------------------
+-- Table structure for wp_partner
+-- ----------------------------
+DROP TABLE IF EXISTS `wp_partner`;
+CREATE TABLE `wp_partner` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wp_partner
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wp_postmeta
 -- ----------------------------
 DROP TABLE IF EXISTS `wp_postmeta`;
@@ -375,6 +448,29 @@ CREATE TABLE `wp_terms` (
 -- Records of wp_terms
 -- ----------------------------
 INSERT INTO `wp_terms` VALUES ('1', 'Без рубрики', '%d0%b1%d0%b5%d0%b7-%d1%80%d1%83%d0%b1%d1%80%d0%b8%d0%ba%d0%b8', '0');
+
+-- ----------------------------
+-- Table structure for wp_toll_data
+-- ----------------------------
+DROP TABLE IF EXISTS `wp_toll_data`;
+CREATE TABLE `wp_toll_data` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `kilo_rate` varchar(255) DEFAULT NULL,
+  `basic_charge` varchar(255) DEFAULT NULL,
+  `fuel_surcharge` varchar(255) DEFAULT NULL,
+  `sub_total` varchar(255) DEFAULT NULL,
+  `gst` varchar(255) DEFAULT NULL,
+  `total_charge` varchar(255) DEFAULT NULL,
+  `service` varchar(255) DEFAULT NULL,
+  `city_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_city` (`city_id`),
+  CONSTRAINT `fk_city` FOREIGN KEY (`city_id`) REFERENCES `wp_city` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wp_toll_data
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wp_usermeta
